@@ -1,33 +1,52 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react'
+import InputBox from './components/InputBox'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [fromPrice, setFromPrice] = useState(1)
+  const [toPrice, setToPrice] = useState(0)
+  const [fromCurrency, setFromCurrency] = useState("usd")
+  const [toCurrency, setToCurrency] = useState("inr")
+  const [options, setOptions] = useState([]);
+
+  useEffect(() => {
+    let currencyConvertUrl =`https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${fromCurrency}.json`;
+    fetch(currencyConvertUrl)
+    .then(response => response.json())
+    .then(data => {
+      let fetchPrice = data[fromCurrency][toCurrency]
+      setToPrice((fromPrice * fetchPrice).toFixed(6));
+    })
+  }, [fromPrice, fromCurrency, toCurrency]);
+
+
+  useEffect(() => {
+    const currencyUrl = 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies.json';
+    fetch(currencyUrl)
+      .then(response => response.json())
+      .then(data => setOptions(Object.keys(data)));
+  }, []);
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className='price_container border p-3 rounded'>
+      <h2 className='text-center text-white'>Currency Converter</h2>
+      <InputBox label="From" currentPrice={fromPrice} setCurrentPrice={setFromPrice} options = {options} SelectedCurrency = {fromCurrency} setSelectedCurrency = {setFromCurrency} />
+      <div className='position-relative'>
+        <button className='swap_btn btn btn-primary position-absolute' 
+        onClick = {(e)=>{
+          let temp = fromCurrency
+          setFromCurrency(toCurrency)
+          setToCurrency(temp)
+
+          let tempPrice = toPrice
+          setToPrice(fromPrice)
+          setFromPrice(tempPrice)
+
+        }}> <i className="bi bi-arrow-down-up"></i> Swap</button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <InputBox label="To" currentPrice={toPrice} setCurrentPrice={setToPrice} options = {options} SelectedCurrency = {toCurrency} setSelectedCurrency = {setToCurrency} disable={true}/>
+    </div>
     </>
   )
 }
