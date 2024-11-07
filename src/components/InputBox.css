@@ -1,0 +1,51 @@
+.custom-select{
+    width: 100%;
+    max-width: 100px;
+    padding: 5px 10px;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    background-color: #efefef;
+    font-size: 16px;
+    color: #495057;
+    position: relative;
+  }
+  
+  .custom-select option {
+    padding: 10px;
+    background-color: #000000be;
+    color: #ffffff;
+    font-size: 16px;
+  }
+  
+  /* Custom scrollbar for the select dropdown */
+  .custom-select::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  .custom-select::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+  
+  .custom-select::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+  
+  .custom-select::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+
+  .currency_input{
+    width: 100%;
+    max-width: 300px;
+    padding: 5px 10px;
+    font-size: 30px;
+    border: none;
+    outline: none;
+    border-radius: 30px;
+    color: #495057;
+    background: transparent;
+  }
